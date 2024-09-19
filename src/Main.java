@@ -59,47 +59,50 @@ class Board {
 
 class Player {
     char mark;
-    Scanner sc = new Scanner(System.in);
 
     public Player(char mark) {
         this.mark = mark;
     }
 
-    public int takeTurn() {
-        System.out.print("Player " + this.mark + " choose a square (1-9): ");
-        return Integer.parseInt(sc.nextLine());
-        }
+    }
 
+public class Main {
+
+    static Scanner sc = new Scanner(System.in);
+
+    public static void takeTurn(Player player, Board board) {
+        boolean validInput = false;
+        int move;
+        while (!validInput) {
+            System.out.print("Player " + player.mark + " choose a square (1-9): ");
+            try {
+                move = Integer.parseInt(sc.nextLine());
+                if (board.recordMove(move, player.mark)) {
+                    validInput = true;
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid input!");
+            }
+        }
     }
 
 
-public class Main {
     public static void main(String[] args) {
         Board board = new Board();
         Player x = new Player('X');
         Player o = new Player('O');
         System.out.println(board);
         while (true) {
-            boolean validMove = false;
-            while (!validMove) {
-                if (board.recordMove(x.takeTurn(), x.mark)) {
-                    System.out.println(board);
-                    validMove = true;
-                }
-            }
+            takeTurn(x, board);
+            System.out.println(board);
             if (board.checkIfOver()) {
                 break;
             }
-            validMove = false;
-            while (!validMove) {
-                if (board.recordMove(o.takeTurn(), o.mark)) {
-                    System.out.println(board);
-                    validMove = true;
-                }
-            }
+            takeTurn(o, board);
+            System.out.println(board);
             if (board.checkIfOver()) {
                 break;
-            }
             }
         }
     }
+}
