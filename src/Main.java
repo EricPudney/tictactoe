@@ -49,11 +49,11 @@ class Board {
 
     @Override
     public String toString() {
-        return squares[0] + "|" + squares[1] + "|" + squares[2]
-                + "\n--------\n" +
-                squares[3] + "|" + squares[4] + "|" + squares[5]
-                + "\n--------\n" +
-                squares[6] + "|" + squares[7] + "|" + squares[8];
+        return " " + squares[0] + " | " + squares[1] + " | " + squares[2]
+                + "\n---+---+---\n" +
+                " " + squares[3] + " | " + squares[4] + " | " + squares[5]
+                + "\n---+---+---\n" +
+                " " + squares[6] + " | " + squares[7] + " | " + squares[8];
     }
 }
 
