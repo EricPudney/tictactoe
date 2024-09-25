@@ -1,108 +1,55 @@
 import java.util.Scanner;
 
-class Board {
-    char[] squares = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
-    public Board() {
-    }
-
-    public boolean checkIfOver() {
-        if (returnWinner()) {
-            return true;
-        }
-        else {
-            for (char c : squares) {
-                if (c == ' ') {
-                    return false;
-                }
-            }
-        }
-        System.out.println("Game over - it's a draw.");
-        return true;
-    }
-
-    public boolean returnWinner() {
-        char[][] rows = {{squares[0], squares[1], squares[2]}, {squares[3], squares[4], squares[5]}, {squares[6], squares[7], squares[8]}};
-        char[][] columns = {{squares[0], squares[3], squares[6]}, {squares[1], squares[4], squares[7]}, {squares[2], squares[5], squares[8]}};
-        char[][] diagonals = {{squares[0], squares[4], squares[8]}, {squares[2], squares[4], squares[6]}};
-        char[][][] lines = {rows, columns, diagonals};
-        for (char[][] arr : lines) {
-            for (char[] line : arr) {
-                if (line[0] == line[1] && line[1] == line[2] && line[0] != ' ') {
-                    System.out.println("Game over! Player " + line[0] + " wins!");
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean recordMove(int square, char mark) {
-        if (squares[square - 1] == ' ') {
-            squares[square - 1] = mark;
-            return true;
-        }
-        else {
-            System.out.println("Invalid move");
-            return false;
-        }
-    }
-
-    @Override
-    public String toString() {
-        return " " + squares[0] + " | " + squares[1] + " | " + squares[2]
-                + "\n---+---+---\n" +
-                " " + squares[3] + " | " + squares[4] + " | " + squares[5]
-                + "\n---+---+---\n" +
-                " " + squares[6] + " | " + squares[7] + " | " + squares[8];
-    }
-}
-
-class Player {
-    char mark;
-
-    public Player(char mark) {
-        this.mark = mark;
-    }
-
-    }
-
 public class Main {
 
     static Scanner sc = new Scanner(System.in);
 
-    public static void takeTurn(Player player, Board board) {
-        boolean validInput = false;
-        int move;
-        while (!validInput) {
-            System.out.print("Player " + player.mark + " choose a square (1-9): ");
-            try {
-                move = Integer.parseInt(sc.nextLine());
-                if (board.recordMove(move, player.mark)) {
-                    validInput = true;
+    private static Player[] initiateGame() {
+        while (true) {
+            System.out.print("Enter a number from 1-3 to play against \n   1. human, \n   2. dumb AI, or \n   3. smart AI\n");
+                Player x;
+                Player o;
+                try {
+                    int choice = sc.nextInt();
+                    switch (choice) {
+                        case 1:
+                            x = new HumanPlayer('X');
+                            o = new HumanPlayer('O');
+                            return new Player[]{x, o};
+                        case 2:
+                            x = new HumanPlayer('X');
+                            o = new dumbAI('O');
+                            return new Player[]{x, o};
+                        case 3:
+                            x = new HumanPlayer('X');
+                            o = new smartAI('O');
+                            return new Player[]{x, o};
+                        default:
+                            System.out.println("Invalid input!");
+                    }
                 }
-            } catch (Exception e) {
-                System.out.println("Invalid input!");
-            }
+                catch (Exception e) {
+                    System.out.println("Invalid input!");
+                    sc.nextLine();
+                }
         }
     }
 
-
     public static void main(String[] args) {
         Board board = new Board();
-        Player x = new Player('X');
-        Player o = new Player('O');
+        Player[] players = initiateGame();
+        Player x = players[0];
+        Player o = players[1];
         System.out.println(board);
-        while (true) {
-            takeTurn(x, board);
-            System.out.println(board);
-            if (board.checkIfOver()) {
-                break;
+        do {
+            Player currentPlayer;
+            if (board.currentPlayer() == 'X') {
+                currentPlayer = x;
+            } else {
+                currentPlayer = o;
             }
-            takeTurn(o, board);
+            board.recordMove(currentPlayer.returnMove(board), currentPlayer.mark);
             System.out.println(board);
-            if (board.checkIfOver()) {
-                break;
-            }
-        }
+        } while (!board.checkIfOver());
     }
 }
