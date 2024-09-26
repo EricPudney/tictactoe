@@ -21,7 +21,6 @@ public class Board {
     public boolean checkIfOver() {
         char winner = returnWinner();
         if (winner != ' ') {
-            System.out.println("Game over! Player " + winner + " wins!");
             return true;
         }
         else {
@@ -31,7 +30,6 @@ public class Board {
                 }
             }
         }
-        System.out.println("Game over - it's a draw.");
         return true;
     }
 
