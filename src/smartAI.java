@@ -66,9 +66,15 @@ public class smartAI extends Player {
 
     public int utility(Board board) {
         char winner = board.returnWinner();
+        int depth = 1;
+        for (char square : board.squares) {
+            if (square == ' ') {
+                depth++;
+            }
+        }
         return switch (winner) {
-            case 'X' -> 1;
-            case 'O' -> -1;
+            case 'X' -> depth;
+            case 'O' -> -1 * depth;
             default -> 0;
         };
     }

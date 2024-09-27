@@ -27,17 +27,10 @@ public class Main {
         }
     }
 
-    private static Player[] initiateGame() {
-        Player x = playerType('X');
-        Player o = playerType('O');
-        return new Player[]{x, o};
-    }
-
     public static void main(String[] args) {
         Board board = new Board();
-        Player[] players = initiateGame();
-        Player x = players[0];
-        Player o = players[1];
+        Player x = playerType('X');
+        Player o = playerType('O');
         System.out.println(board);
         do {
             Player currentPlayer;
